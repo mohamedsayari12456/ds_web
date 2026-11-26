@@ -1,0 +1,58 @@
+# DriveEasy complet sous Docker (aucun JDK/Maven/Node requis sur la machine).
+# Lancement : docker compose -f docker-compose.full.yml build
+#             docker compose -f docker-compose.full.yml up -d
+# Arret     : docker compose -f docker-compose.full.yml down
+x-service: &service
+  image: driveeasy-backend:1.0.0
+  pull_policy: never
+  restart: on-failure
+  environment:
+    EUREKA_URI: http://service-registry:8761/eureka/
+    CONFIG_SERVER_URI: http://config-server:8888
+    ZIPKIN_URI: http://zipkin:9411/api/v2/spans
+
+services:
+  zipkin:
+    image: openzipkin/zipkin:latest
+    ports: ["9411:9411"]
+
+  service-registry:
+    <<: *service
+    build: .
+    command: ["java", "-jar", "service-registry-1.0.0.jar"]
+    ports: ["8761:8761"]
+
+  config-server:
+    <<: *service
+    command: ["java", "-jar", "config-server-1.0.0.jar"]
+    ports: ["8888:8888"]
+    depends_on: [service-registry]
+
+  vehicule-service:
+    <<: *service
+    command: ["java", "-jar", "vehicule-service-1.0.0.jar"]
+    ports: ["8081:8081"]
+    depends_on: [config-server, zipkin]
+
+  client-service:
+    <<: *service
+    command: ["java", "-jar", "client-service-1.0.0.jar"]
+    ports: ["8082:8082"]
+    depends_on: [config-server, zipkin]
+
+  location-service:
+    <<: *service
+    command: ["java", "-jar", "location-service-1.0.0.jar"]
+    ports: ["8083:8083"]
+    depends_on: [config-server, zipkin]
+
+  api-gateway:
+    <<: *service
+    command: ["java", "-jar", "api-gateway-1.0.0.jar"]
+    ports: ["8080:8080"]
+    depends_on: [config-server, zipkin]
+
+  frontend:
+    build: ../driveeasy-frontend
+    ports: ["4200:80"]
+    depends_on: [api-gateway]

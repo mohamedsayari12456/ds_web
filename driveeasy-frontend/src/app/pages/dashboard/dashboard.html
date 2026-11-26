@@ -1,0 +1,96 @@
+<div class="entete">
+  <div>
+    <h1>Tableau de bord</h1>
+    <p>Vue d'ensemble de l'activité de l'agence</p>
+  </div>
+  <a class="btn btn-primaire" routerLink="/locations/new">+ Nouvelle location</a>
+</div>
+
+@if (stats(); as s) {
+  @for (a of s.avertissements; track a) { <p class="alerte">{{ a }}</p> }
+
+  <div class="grille g4">
+    <div class="carte kpi">
+      <span class="libelle">Véhicules disponibles</span>
+      <span class="valeur" style="color: var(--vert)">{{ s.vehiculesParStatut['DISPONIBLE'] ?? '–' }}</span>
+      <span class="doux">sur {{ s.nbVehicules ?? '–' }} véhicules</span>
+    </div>
+    <div class="carte kpi">
+      <span class="libelle">Loués / en maintenance</span>
+      <span class="valeur"><span style="color: var(--bleu)">{{ s.vehiculesParStatut['LOUE'] ?? '–' }}</span> / <span style="color: var(--orange)">{{ s.vehiculesParStatut['MAINTENANCE'] ?? '–' }}</span></span>
+      <span class="doux">Taux d'occupation : {{ s.tauxOccupation ?? '–' }} %</span>
+    </div>
+    <div class="carte kpi">
+      <span class="libelle">Chiffre d'affaires du mois</span>
+      <span class="valeur">{{ s.chiffreAffairesMois | tnd: '1.0-0' }}</span>
+      <span class="doux">Total : {{ s.chiffreAffairesTotal | tnd: '1.0-0' }}</span>
+    </div>
+    <div class="carte kpi">
+      <span class="libelle">Locations en cours</span>
+      <span class="valeur">{{ s.locationsEnCours }}</span>
+      <span [class]="s.locationsEnRetard ? 'erreur' : 'doux'">{{ s.locationsEnRetard }} en retard · occupation 30 j : {{ s.tauxOccupation30Jours ?? '–' }} %</span>
+    </div>
+  </div>
+
+  <div class="grille g3 mt">
+    <div class="carte" style="grid-column: span 2">
+      <h2>Chiffre d'affaires des 6 derniers mois</h2>
+      @if (graphiqueCa(); as cfg) { <app-chart [config]="cfg" /> }
+    </div>
+    <div class="carte">
+      <h2>État du parc</h2>
+      @if (graphiqueParc(); as cfg) { <app-chart [config]="cfg" /> }
+    </div>
+  </div>
+
+  <div class="grille g3 mt">
+    <div class="carte" style="grid-column: span 2">
+      <h2>Locations en cours</h2>
+      <div class="table-scroll">
+        <table class="tableau">
+          <thead><tr><th>#</th><th>Client</th><th>Véhicule</th><th>Retour prévu</th><th></th></tr></thead>
+          <tbody>
+            @for (l of enCours(); track l.id) {
+              <tr>
+                <td>{{ l.id }}</td>
+                <td>
+                  @if (clients().get(l.clientId); as c) { <a [routerLink]="['/clients', c.id]">{{ c.prenom }} {{ c.nom }}</a> } @else { #{{ l.clientId }} }
+                </td>
+                <td>{{ vehicules().get(l.vehiculeId)?.marque }} {{ vehicules().get(l.vehiculeId)?.modele }}</td>
+                <td>
+                  {{ l.dateFinPrevue | date: 'dd/MM/yyyy' }}
+                  @if (l.enRetard) { <span class="badge badge-ko">En retard</span> }
+                </td>
+                <td class="num"><a class="btn btn-petit" [routerLink]="['/locations', l.id, 'retour']">Retour</a></td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="vide">Aucune location en cours</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="carte">
+      <h2>Locations par statut</h2>
+      @if (graphiqueStatuts(); as cfg) { <app-chart [config]="cfg" [hauteur]="200" /> }
+    </div>
+  </div>
+
+  <div class="carte mt">
+    <h2>Véhicules les plus loués</h2>
+    <table class="tableau">
+      <thead><tr><th>Rang</th><th>Véhicule</th><th>Immatriculation</th><th class="num">Locations</th><th class="num">CA généré</th></tr></thead>
+      <tbody>
+        @for (v of s.topVehicules; track v.vehiculeId; let i = $index) {
+          <tr>
+            <td>{{ i + 1 }}</td><td>{{ v.libelle }}</td><td>{{ v.immatriculation }}</td>
+            <td class="num">{{ v.nbLocations }}</td>
+            <td class="num">{{ v.chiffreAffaires | number: '1.2-2' }} TND</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <p class="vide">Chargement des indicateurs…</p>
+}

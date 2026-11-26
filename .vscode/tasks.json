@@ -1,0 +1,115 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "A - Installer JDK, Maven, Node",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File outils/installer-outils.ps1 | Tee-Object -FilePath logs\\install.txt",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "B - Compiler et tester le backend (Maven)",
+      "type": "shell",
+      "command": "$env:JAVA_HOME=[Environment]::GetEnvironmentVariable('JAVA_HOME','User'); $env:Path=[Environment]::GetEnvironmentVariable('Path','User')+';'+[Environment]::GetEnvironmentVariable('Path','Machine'); mvn.cmd -B clean package *>&1 | Tee-Object -FilePath logs\\mvn-build.txt",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "C - Demarrer backend (sans Docker)",
+      "type": "shell",
+      "command": "$env:JAVA_HOME=[Environment]::GetEnvironmentVariable('JAVA_HOME','User'); $env:Path=[Environment]::GetEnvironmentVariable('Path','User')+';'+[Environment]::GetEnvironmentVariable('Path','Machine'); docker compose -f docker-compose.full.yml down; powershell -NoProfile -ExecutionPolicy Bypass -File start-all.ps1 | Tee-Object -FilePath logs\\start-all.txt",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "D - Installer dependances et demarrer frontend",
+      "type": "shell",
+      "command": "$env:JAVA_HOME=[Environment]::GetEnvironmentVariable('JAVA_HOME','User'); $env:Path=[Environment]::GetEnvironmentVariable('Path','User')+';'+[Environment]::GetEnvironmentVariable('Path','Machine'); npm.cmd install *>&1 | Tee-Object -FilePath ..\\logs\\npm-install.txt; npm.cmd start *>&1 | Tee-Object -FilePath ..\\logs\\npm-start.txt",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "0 - Tout lancer avec Docker (backend + frontend)",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"docker compose -f docker-compose.full.yml build *>&1 | Tee-Object -FilePath logs\\docker-build.txt; docker compose -f docker-compose.full.yml up -d *>&1 | Tee-Object -FilePath logs\\docker-up.txt; docker compose -f docker-compose.full.yml ps *>&1 | Tee-Object -Append -FilePath logs\\docker-up.txt\"",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "0b - Etat et journaux Docker",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"docker compose -f docker-compose.full.yml ps -a *>&1 | Out-File -Encoding utf8 logs\\docker-ps.txt; docker compose -f docker-compose.full.yml logs --no-color --tail 80 *>&1 | Out-File -Encoding utf8 logs\\docker-logs.txt; Get-Content logs\\docker-ps.txt\"",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "0c - Arreter Docker",
+      "type": "shell",
+      "command": "docker compose -f docker-compose.full.yml down",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "1 - Verifier environnement",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File outils/verifier-env.ps1",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "2 - Demarrer backend",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File start-all.ps1 | Tee-Object -FilePath logs\\start-all.txt",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "3 - Tester API",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\test-api.ps1 -Sortie logs\\api-tests.json | Tee-Object -FilePath logs\\test-api.txt",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "4 - Demarrer frontend",
+      "type": "shell",
+      "command": "npm.cmd install; npm.cmd start",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "5 - Arreter backend",
+      "type": "shell",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\stop-all.ps1",
+      "options": {
+        "cwd": "${workspaceFolder}/driveeasy-backend"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

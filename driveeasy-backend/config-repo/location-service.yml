@@ -1,0 +1,30 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: "memory://locations"
+
+info:
+  app:
+    name: location-service
+    description: Cycle de vie des locations et orchestration des appels inter-services
+
+driveeasy:
+  location:
+    donnees-demo: true
+    taille-page-defaut: 10
+    penalite-coefficient: 1.5   # penalite = 1,5 x prix journalier par jour de retard
+    seuil-fidele: 5             # nb de locations terminees pour passer FIDELE
+    seuil-vip: 15               # nb de locations terminees pour passer VIP
+    remises:                    # remise fidelite (pourcentage)
+      STANDARD: 0
+      FIDELE: 5
+      VIP: 10
+    coefficients-categorie:     # coefficient tarifaire par categorie de vehicule
+      ECONOMIQUE: 1.00
+      COMPACTE: 1.05
+      BERLINE: 1.10
+      SUV: 1.20
+      UTILITAIRE: 1.15
+      LUXE: 1.35

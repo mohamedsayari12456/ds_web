@@ -1,0 +1,809 @@
+{
+  "info": {
+    "name": "DriveEasy API (via Gateway)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Toutes les requetes passent par l'API Gateway (port 8080). Remplacer les dates par des dates futures si besoin."
+  },
+  "variable": [
+    {
+      "key": "gateway",
+      "value": "http://localhost:8080/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "Vehicules",
+      "item": [
+        {
+          "name": "Lister (filtres)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules?carburant=DIESEL&prixMax=200",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules"
+              ],
+              "query": [
+                {
+                  "key": "carburant",
+                  "value": "DIESEL"
+                },
+                {
+                  "key": "prixMax",
+                  "value": "200"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/1",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Disponibles sur une periode",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/disponibles?dateDebut=2026-12-10&dateFin=2026-12-14",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "disponibles"
+              ],
+              "query": [
+                {
+                  "key": "dateDebut",
+                  "value": "2026-12-10"
+                },
+                {
+                  "key": "dateFin",
+                  "value": "2026-12-14"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Creer (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immatriculation\": \"160 TU 1234\",\n  \"marque\": \"Skoda\",\n  \"modele\": \"Octavia\",\n  \"annee\": 2024,\n  \"couleur\": \"Gris\",\n  \"categorie\": \"BERLINE\",\n  \"carburant\": \"DIESEL\",\n  \"boite\": \"AUTOMATIQUE\",\n  \"nbPlaces\": 5,\n  \"kilometrage\": 5000,\n  \"prixJournalier\": 140.0\n}"
+            }
+          }
+        },
+        {
+          "name": "Creer doublon immatriculation (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immatriculation\": \"123 TU 4567\",\n  \"marque\": \"Skoda\",\n  \"modele\": \"Octavia\",\n  \"annee\": 2024,\n  \"couleur\": \"Gris\",\n  \"categorie\": \"BERLINE\",\n  \"carburant\": \"DIESEL\",\n  \"boite\": \"AUTOMATIQUE\",\n  \"nbPlaces\": 5,\n  \"kilometrage\": 5000,\n  \"prixJournalier\": 140.0\n}"
+            }
+          }
+        },
+        {
+          "name": "Creer prix negatif (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immatriculation\": \"999 TU 1\",\n  \"marque\": \"Skoda\",\n  \"modele\": \"Octavia\",\n  \"annee\": 2024,\n  \"couleur\": \"Gris\",\n  \"categorie\": \"BERLINE\",\n  \"carburant\": \"DIESEL\",\n  \"boite\": \"AUTOMATIQUE\",\n  \"nbPlaces\": 5,\n  \"kilometrage\": 5000,\n  \"prixJournalier\": -5\n}"
+            }
+          }
+        },
+        {
+          "name": "Modifier",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/1",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "1"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immatriculation\": \"123 TU 4567\",\n  \"marque\": \"Peugeot\",\n  \"modele\": \"208\",\n  \"annee\": 2024,\n  \"couleur\": \"Gris\",\n  \"categorie\": \"BERLINE\",\n  \"carburant\": \"DIESEL\",\n  \"boite\": \"AUTOMATIQUE\",\n  \"nbPlaces\": 5,\n  \"kilometrage\": 5000,\n  \"prixJournalier\": 89\n}"
+            }
+          }
+        },
+        {
+          "name": "Changer statut",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/12/statut",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "12",
+                "statut"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"statut\": \"DISPONIBLE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Supprimer vehicule loue (409)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/5",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "5"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Supprimer (204)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/9",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "9"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Inexistant (404)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/vehicules/999",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "vehicules",
+                "999"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "Rechercher",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients?q=ben",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "ben"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients/1",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Eligibilite OK",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients/1/eligibilite",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients",
+                "1",
+                "eligibilite"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Eligibilite - moins de 21 ans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients/7/eligibilite",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients",
+                "7",
+                "eligibilite"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Eligibilite - permis expire",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients/8/eligibilite",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients",
+                "8",
+                "eligibilite"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Creer (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cin\": \"14725836\",\n  \"nom\": \"Ben Salah\",\n  \"prenom\": \"Yasmine\",\n  \"dateNaissance\": \"1995-04-12\",\n  \"email\": \"yasmine.bensalah@mail.tn\",\n  \"telephone\": \"+216 98 765 432\",\n  \"adresse\": \"Tunis\",\n  \"numeroPermis\": \"TN-2016-12345\",\n  \"dateExpirationPermis\": \"2031-01-01\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Creer doublon CIN (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cin\": \"09876543\",\n  \"nom\": \"Ben Salah\",\n  \"prenom\": \"Yasmine\",\n  \"dateNaissance\": \"1995-04-12\",\n  \"email\": \"x@mail.tn\",\n  \"telephone\": \"+216 98 765 432\",\n  \"adresse\": \"Tunis\",\n  \"numeroPermis\": \"X1\",\n  \"dateExpirationPermis\": \"2031-01-01\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Modifier categorie",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients/4/categorie",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients",
+                "4",
+                "categorie"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categorie\": \"FIDELE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Supprimer client avec location active (409)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/clients/2",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "clients",
+                "2"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Lister (pagine)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations?page=0&size=5&statut=TERMINEE",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                },
+                {
+                  "key": "statut",
+                  "value": "TERMINEE"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Detail enrichi",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations/1",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Simulation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations/simulation",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations",
+                "simulation"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 5,\n  \"vehiculeId\": 6,\n  \"dateDebut\": \"2026-12-10\",\n  \"dateFin\": \"2026-12-14\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Creer reservation (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 1,\n  \"vehiculeId\": 1,\n  \"dateDebut\": \"2026-12-10\",\n  \"dateFin\": \"2026-12-14\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Creer - client non eligible (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 7,\n  \"vehiculeId\": 1,\n  \"dateDebut\": \"2026-12-20\",\n  \"dateFin\": \"2026-12-22\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Creer - vehicule en maintenance (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 1,\n  \"vehiculeId\": 12,\n  \"dateDebut\": \"2026-12-20\",\n  \"dateFin\": \"2026-12-22\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Depart",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations/3/depart",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations",
+                "3",
+                "depart"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Retour (avec penalite)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations/2/retour",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations",
+                "2",
+                "retour"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kmRetour\": 13500\n}"
+            }
+          }
+        },
+        {
+          "name": "Annulation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations/4/annulation",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations",
+                "4",
+                "annulation"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Statistiques",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway}}/locations/statistiques",
+              "host": [
+                "{{gateway}}"
+              ],
+              "path": [
+                "locations",
+                "statistiques"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    }
+  ]
+}

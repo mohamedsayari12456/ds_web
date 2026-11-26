@@ -1,0 +1,93 @@
+<div class="entete">
+  <div>
+    <h1>{{ modeEdition ? 'Modifier le véhicule' : 'Nouveau véhicule' }}</h1>
+    <p>Les champs marqués * sont obligatoires</p>
+  </div>
+  <a class="btn" routerLink="/vehicules">← Retour au catalogue</a>
+</div>
+
+<form class="carte" [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+  <div class="form-grille">
+    <div class="champ">
+      <label for="immatriculation">Immatriculation *</label>
+      <input id="immatriculation" formControlName="immatriculation" placeholder="123 TU 4567" />
+      @if (invalide('immatriculation')) { <span class="erreur">Immatriculation obligatoire (20 caractères max)</span> }
+      @if (erreursServeur()['immatriculation']; as e) { <span class="erreur">{{ e }}</span> }
+    </div>
+    <div class="champ">
+      <label for="marque">Marque *</label>
+      <input id="marque" formControlName="marque" />
+      @if (invalide('marque')) { <span class="erreur">Marque obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="modele">Modèle *</label>
+      <input id="modele" formControlName="modele" />
+      @if (invalide('modele')) { <span class="erreur">Modèle obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="annee">Année *</label>
+      <input id="annee" type="number" formControlName="annee" [max]="anneeMax" />
+      @if (invalide('annee')) { <span class="erreur">Année entre 1990 et {{ anneeMax }}</span> }
+    </div>
+    <div class="champ">
+      <label for="couleur">Couleur</label>
+      <input id="couleur" formControlName="couleur" />
+    </div>
+    <div class="champ">
+      <label for="categorie">Catégorie *</label>
+      <select id="categorie" formControlName="categorie">
+        @for (c of categories; track c) { <option [value]="c">{{ c | libelle }}</option> }
+      </select>
+    </div>
+    <div class="champ">
+      <label for="carburant">Carburant *</label>
+      <select id="carburant" formControlName="carburant">
+        @for (c of carburants; track c) { <option [value]="c">{{ c | libelle }}</option> }
+      </select>
+    </div>
+    <div class="champ">
+      <label for="boite">Boîte *</label>
+      <select id="boite" formControlName="boite">
+        @for (b of boites; track b) { <option [value]="b">{{ b | libelle }}</option> }
+      </select>
+    </div>
+    <div class="champ">
+      <label for="nbPlaces">Nombre de places *</label>
+      <input id="nbPlaces" type="number" formControlName="nbPlaces" min="1" max="9" />
+      @if (invalide('nbPlaces')) { <span class="erreur">Entre 1 et 9 places</span> }
+    </div>
+    <div class="champ">
+      <label for="kilometrage">Kilométrage *</label>
+      <input id="kilometrage" type="number" formControlName="kilometrage" min="0" />
+      @if (invalide('kilometrage')) { <span class="erreur">Kilométrage positif obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="prixJournalier">Prix journalier (TND) *</label>
+      <input id="prixJournalier" type="number" step="0.01" formControlName="prixJournalier" />
+      @if (invalide('prixJournalier')) { <span class="erreur">Le prix doit être strictement positif</span> }
+      @if (erreursServeur()['prixJournalier']; as e) { <span class="erreur">{{ e }}</span> }
+    </div>
+    <div class="champ">
+      <label for="statut">Statut *</label>
+      <select id="statut" formControlName="statut">
+        @for (s of statuts; track s) {
+          <option [value]="s" [disabled]="s === 'LOUE' && statutActuel() !== 'LOUE'">{{ s | libelle }}</option>
+        }
+      </select>
+      @if (statutActuel() === 'LOUE') { <span class="doux">Véhicule loué : le statut sera remis à jour au retour.</span> }
+    </div>
+    <div class="champ" style="grid-column: 1 / -1">
+      <label for="imageUrl">URL de l'image (facultatif)</label>
+      <div class="apercu">
+        <img [src]="apercuImage()" alt="Aperçu" />
+        <input id="imageUrl" formControlName="imageUrl" placeholder="Laisser vide pour l'illustration de la catégorie" />
+      </div>
+    </div>
+  </div>
+  <div class="actions mt">
+    <button class="btn btn-primaire" type="submit" [disabled]="enregistrement()">
+      {{ enregistrement() ? 'Enregistrement…' : 'Enregistrer' }}
+    </button>
+    <a class="btn" routerLink="/vehicules">Annuler</a>
+  </div>
+</form>

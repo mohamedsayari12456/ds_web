@@ -1,0 +1,71 @@
+@if (client(); as c) {
+  <div class="entete">
+    <div>
+      <h1>{{ c.prenom }} {{ c.nom }} <span class="badge badge-{{ c.categorieClient }}">{{ c.categorieClient | libelle }}</span></h1>
+      <p>Client depuis le {{ c.dateInscription | date: 'dd/MM/yyyy' }}</p>
+    </div>
+    <div class="actions">
+      <a class="btn" routerLink="/clients">← Clients</a>
+      <a class="btn" [routerLink]="['/clients', c.id, 'edit']">Modifier</a>
+      @if (eligibilite()?.eligible) {
+        <a class="btn btn-primaire" routerLink="/locations/new" [queryParams]="{ clientId: c.id }">+ Nouvelle location</a>
+      }
+    </div>
+  </div>
+
+  <div class="grille g3">
+    <div class="carte" style="grid-column: span 2">
+      <h2>Informations</h2>
+      <div class="grille g2">
+        <div><span class="doux">CIN</span><br />{{ c.cin }}</div>
+        <div><span class="doux">Date de naissance</span><br />{{ c.dateNaissance | date: 'dd/MM/yyyy' }} ({{ c.age }} ans)</div>
+        <div><span class="doux">Email</span><br />{{ c.email }}</div>
+        <div><span class="doux">Téléphone</span><br />{{ c.telephone }}</div>
+        <div><span class="doux">Adresse</span><br />{{ c.adresse || '—' }}</div>
+        <div>
+          <span class="doux">Permis de conduire</span><br />{{ c.numeroPermis }} —
+          <span [class]="c.permisExpire ? 'erreur' : ''">expire le {{ c.dateExpirationPermis | date: 'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="carte">
+      <h2>Éligibilité à la location</h2>
+      @if (eligibilite(); as e) {
+        @if (e.eligible) {
+          <p class="badge badge-ok" style="font-size: 14px">✓ Éligible</p>
+        } @else {
+          <p class="badge badge-ko" style="font-size: 14px">✗ Non éligible</p>
+        }
+        <ul>
+          <li>Âge ≥ 21 ans : {{ e.ageSuffisant ? 'oui' : 'non' }} ({{ e.age }} ans)</li>
+          <li>Permis valide : {{ e.permisValide ? 'oui' : 'non' }}</li>
+        </ul>
+        @for (m of e.motifs; track m) { <p class="alerte alerte-rouge">{{ m }}</p> }
+      }
+      <p class="doux">{{ nbTerminees() }} location(s) terminée(s) · {{ totalDepense() | tnd }} dépensés</p>
+    </div>
+  </div>
+
+  <div class="carte mt table-scroll">
+    <h2>Historique des locations</h2>
+    <table class="tableau">
+      <thead><tr><th>#</th><th>Véhicule</th><th>Période</th><th>Statut</th><th class="num">Pénalité</th><th class="num">Montant</th></tr></thead>
+      <tbody>
+        @for (l of locations(); track l.id) {
+          <tr>
+            <td>{{ l.id }}</td>
+            <td>{{ vehicules().get(l.vehiculeId)?.marque }} {{ vehicules().get(l.vehiculeId)?.modele }}</td>
+            <td>{{ l.dateDebut | date: 'dd/MM/yyyy' }} → {{ (l.dateRetourEffectif ?? l.dateFinPrevue) | date: 'dd/MM/yyyy' }}</td>
+            <td><span class="badge badge-{{ l.statut }}">{{ l.statut | libelle }}</span></td>
+            <td class="num">{{ l.penalite ? (l.penalite | tnd) : '—' }}</td>
+            <td class="num">{{ l.montantTotal | tnd }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6" class="vide">Aucune location</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <p class="vide">Chargement…</p>
+}

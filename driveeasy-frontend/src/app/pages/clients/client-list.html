@@ -1,0 +1,65 @@
+<div class="entete">
+  <div>
+    <h1>Clients</h1>
+    <p>{{ clients().length }} client(s)</p>
+  </div>
+  <a class="btn btn-primaire" routerLink="/clients/new">+ Nouveau client</a>
+</div>
+
+@if (nbPermisExpires() > 0) {
+  <p class="alerte alerte-rouge">⚠ {{ nbPermisExpires() }} client(s) ont un permis de conduire expiré : ils ne peuvent pas louer.</p>
+}
+
+<form class="carte filtres" (ngSubmit)="rechercher()">
+  <div class="champ" style="flex: 1; min-width: 260px">
+    <label for="q">Rechercher</label>
+    <input id="q" name="q" [(ngModel)]="q" placeholder="Nom, CIN ou email…" />
+  </div>
+  <div class="champ">
+    <label for="cat">Catégorie</label>
+    <select id="cat" name="categorie" [(ngModel)]="categorie" (ngModelChange)="rechercher()">
+      <option value="">Toutes</option>
+      @for (c of categories; track c) { <option [value]="c">{{ c | libelle }}</option> }
+    </select>
+  </div>
+  <button class="btn btn-primaire" type="submit">Rechercher</button>
+</form>
+
+<div class="carte table-scroll">
+  <table class="tableau">
+    <thead>
+      <tr><th>Client</th><th>CIN</th><th>Contact</th><th>Âge</th><th>Permis</th><th>Catégorie</th><th></th></tr>
+    </thead>
+    <tbody>
+      @for (c of pageCourante(); track c.id) {
+        <tr>
+          <td><a [routerLink]="['/clients', c.id]"><strong>{{ c.prenom }} {{ c.nom }}</strong></a></td>
+          <td>{{ c.cin }}</td>
+          <td>{{ c.email }}<br /><span class="doux">{{ c.telephone }}</span></td>
+          <td>{{ c.age }} ans</td>
+          <td>
+            {{ c.numeroPermis }}<br />
+            @if (c.permisExpire) {
+              <span class="badge badge-ko">Expiré le {{ c.dateExpirationPermis | date: 'dd/MM/yyyy' }}</span>
+            } @else if (expireBientot(c)) {
+              <span class="badge badge-warn">Expire le {{ c.dateExpirationPermis | date: 'dd/MM/yyyy' }}</span>
+            } @else {
+              <span class="doux">Valide jusqu'au {{ c.dateExpirationPermis | date: 'dd/MM/yyyy' }}</span>
+            }
+          </td>
+          <td><span class="badge badge-{{ c.categorieClient }}">{{ c.categorieClient | libelle }}</span></td>
+          <td class="num">
+            <div class="actions" style="justify-content: flex-end">
+              <a class="btn btn-petit" [routerLink]="['/clients', c.id]">Fiche</a>
+              <a class="btn btn-petit" [routerLink]="['/clients', c.id, 'edit']">Modifier</a>
+              <button class="btn btn-petit btn-danger" (click)="supprimer(c)">Supprimer</button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="vide">Aucun client trouvé</td></tr>
+      }
+    </tbody>
+  </table>
+  <app-pagination [page]="page()" [nbPages]="nbPages()" [total]="clients().length" (changer)="page.set($event)" />
+</div>

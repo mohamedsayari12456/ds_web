@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 230" role="img" aria-label="Vehicule utilitaire">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+  <rect width="410" height="230" fill="url(#g)"/>
+  <ellipse cx="205" cy="192" rx="175" ry="10" fill="#cbd5e1" opacity=".6"/>
+  <path d="M48 180 L48 92 Q48 78 64 78 L268 78 Q284 78 294 92 L330 140 L360 146 Q372 150 372 164 L372 180 Z" fill="#475569"/>
+  <path d="M250 92 L270 92 Q280 92 288 102 L314 138 L250 138 Z M70 92 L236 92 L236 130 L70 130 Z" fill="#ffffff" opacity=".75"/>
+  <circle cx="115" cy="180" r="24" fill="#0f172a"/><circle cx="115" cy="180" r="10" fill="#94a3b8"/>
+  <circle cx="300" cy="180" r="24" fill="#0f172a"/><circle cx="300" cy="180" r="10" fill="#94a3b8"/>
+</svg>

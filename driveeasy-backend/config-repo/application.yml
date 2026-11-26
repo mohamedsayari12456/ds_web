@@ -1,0 +1,47 @@
+# ============================================================
+#  Configuration COMMUNE a tous les services DriveEasy
+#  (servie par le Config Server, fusionnee avec <service>.yml)
+# ============================================================
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+    registry-fetch-interval-seconds: 5
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+  # ---- Zipkin / tracage distribue ----
+  tracing:
+    sampling:
+      probability: 1.0      # 100 % des requetes tracees en developpement
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URI:http://localhost:9411/api/v2/spans}
+
+logging:
+  pattern:
+    # Ajoute traceId/spanId dans chaque ligne de log
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+spring:
+  cloud:
+    loadbalancer:
+      cache:
+        ttl: 5s             # rafraichit vite la liste des instances (redemarrage d'un service)
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null

@@ -1,0 +1,67 @@
+<div class="entete">
+  <div>
+    <h1>{{ modeEdition ? 'Modifier le client' : 'Nouveau client' }}</h1>
+    <p>CIN, email et numéro de permis doivent être uniques</p>
+  </div>
+  <a class="btn" routerLink="/clients">← Clients</a>
+</div>
+
+<form class="carte" [formGroup]="form" (ngSubmit)="enregistrer()" novalidate>
+  <div class="grille g3">
+    <div class="champ">
+      <label for="cin">CIN *</label>
+      <input id="cin" formControlName="cin" maxlength="8" placeholder="8 chiffres" />
+      @if (invalide('cin')) { <span class="erreur">Le CIN doit contenir 8 chiffres</span> }
+      @if (erreursServeur()['cin']; as e) { <span class="erreur">{{ e }}</span> }
+    </div>
+    <div class="champ">
+      <label for="nom">Nom *</label>
+      <input id="nom" formControlName="nom" />
+      @if (invalide('nom')) { <span class="erreur">Nom obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="prenom">Prénom *</label>
+      <input id="prenom" formControlName="prenom" />
+      @if (invalide('prenom')) { <span class="erreur">Prénom obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="dateNaissance">Date de naissance *</label>
+      <input id="dateNaissance" type="date" formControlName="dateNaissance" />
+      @if (invalide('dateNaissance')) { <span class="erreur">Date passée obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="email">Email *</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (invalide('email')) { <span class="erreur">Email invalide</span> }
+    </div>
+    <div class="champ">
+      <label for="telephone">Téléphone *</label>
+      <input id="telephone" formControlName="telephone" placeholder="+216 98 123 456" />
+      @if (invalide('telephone')) { <span class="erreur">Téléphone invalide</span> }
+    </div>
+    <div class="champ" style="grid-column: span 2">
+      <label for="adresse">Adresse</label>
+      <input id="adresse" formControlName="adresse" />
+    </div>
+    <div class="champ">
+      <label for="categorieClient">Catégorie de fidélité</label>
+      <select id="categorieClient" formControlName="categorieClient">
+        @for (c of categories; track c) { <option [value]="c">{{ c | libelle }}</option> }
+      </select>
+    </div>
+    <div class="champ">
+      <label for="numeroPermis">N° de permis *</label>
+      <input id="numeroPermis" formControlName="numeroPermis" />
+      @if (invalide('numeroPermis')) { <span class="erreur">Numéro de permis obligatoire</span> }
+    </div>
+    <div class="champ">
+      <label for="dateExpirationPermis">Expiration du permis *</label>
+      <input id="dateExpirationPermis" type="date" formControlName="dateExpirationPermis" />
+      @if (invalide('dateExpirationPermis')) { <span class="erreur">Date obligatoire</span> }
+    </div>
+  </div>
+  <div class="actions mt">
+    <button class="btn btn-primaire" type="submit" [disabled]="enregistrement()">Enregistrer</button>
+    <a class="btn" routerLink="/clients">Annuler</a>
+  </div>
+</form>

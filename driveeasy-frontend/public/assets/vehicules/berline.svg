@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 230" role="img" aria-label="Vehicule berline">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcfce7"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+  <rect width="410" height="230" fill="url(#g)"/>
+  <ellipse cx="205" cy="192" rx="175" ry="10" fill="#cbd5e1" opacity=".6"/>
+  <path d="M48 152 L92 116 Q104 104 125 102 L245 102 Q266 103 282 118 L316 142 L362 148 Q378 152 378 166 L378 178 L32 178 L32 164 Q34 154 48 152 Z" fill="#15803d"/>
+  <path d="M108 142 L130 116 Q136 110 146 110 L196 110 L196 142 Z M206 110 L244 110 Q258 110 268 120 L288 142 L206 142 Z" fill="#ffffff" opacity=".75"/>
+  <circle cx="115" cy="180" r="24" fill="#0f172a"/><circle cx="115" cy="180" r="10" fill="#94a3b8"/>
+  <circle cx="300" cy="180" r="24" fill="#0f172a"/><circle cx="300" cy="180" r="10" fill="#94a3b8"/>
+</svg>

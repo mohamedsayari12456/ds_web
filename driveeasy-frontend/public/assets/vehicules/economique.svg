@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 230" role="img" aria-label="Vehicule economique">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+  <rect width="410" height="230" fill="url(#g)"/>
+  <ellipse cx="205" cy="192" rx="175" ry="10" fill="#cbd5e1" opacity=".6"/>
+  <path d="M70 150 L95 112 Q105 98 125 96 L235 96 Q255 97 268 112 L300 140 L338 146 Q352 150 352 165 L352 178 L58 178 L58 165 Q58 152 70 150 Z" fill="#2563eb"/>
+  <path d="M112 142 L128 112 Q133 106 142 106 L182 106 L182 142 Z M192 106 L232 106 Q244 106 252 116 L272 142 L192 142 Z" fill="#ffffff" opacity=".75"/>
+  <circle cx="115" cy="180" r="24" fill="#0f172a"/><circle cx="115" cy="180" r="10" fill="#94a3b8"/>
+  <circle cx="300" cy="180" r="24" fill="#0f172a"/><circle cx="300" cy="180" r="10" fill="#94a3b8"/>
+</svg>

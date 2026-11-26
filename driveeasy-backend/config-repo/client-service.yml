@@ -1,0 +1,16 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: "memory://clients"
+
+info:
+  app:
+    name: client-service
+    description: Gestion des clients et de la validite du permis de conduire
+
+driveeasy:
+  client:
+    age-minimum: 21             # age minimal pour louer
+    donnees-demo: true

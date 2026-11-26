@@ -1,0 +1,45 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    # "native" = depot de configuration local (dossier config-repo) ; "git" = depot GitHub
+    active: ${CONFIG_PROFILE:native}
+  cloud:
+    config:
+      server:
+        native:
+          # Les derniers emplacements sont prioritaires :
+          #  - copie embarquee dans le jar (secours si le dossier est introuvable)
+          #  - dossier config-repo a la racine du backend (lancement depuis la racine ou depuis le module)
+          search-locations: classpath:/config-repo, file:../config-repo, file:./config-repo
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+---
+# Profil git : configuration externalisee dans un depot GitHub (dossier config-repo pousse sur GitHub)
+spring:
+  config:
+    activate:
+      on-profile: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${CONFIG_GIT_URI:https://github.com/votre-compte/driveeasy-config}
+          default-label: ${CONFIG_GIT_BRANCH:main}
+          search-paths: config-repo
+          clone-on-start: true

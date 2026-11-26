@@ -1,0 +1,18 @@
+# Dependencies & builds
+node_modules/
+target/
+dist/
+.angular/
+
+# Logs
+logs/
+*.log
+
+# Archives
+*.zip
+
+# IDE / OS
+.idea/
+*.iml
+Thumbs.db
+.DS_Store

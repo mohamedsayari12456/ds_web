@@ -1,0 +1,25 @@
+<h3>Analyse des temps de réponse</h3>
+<p>La trace <code>6b070bae345934c5977696232cc6661f</code> correspond à une réservation créée depuis l'assistant Angular
+(<code>POST /api/locations</code>, réponse 201). Elle comporte 9 spans répartis sur 4 services ; tous partagent le même
+traceId, propagé par la gateway puis par le <code>RestClient</code> instrumenté.</p>
+<table class="tab"><caption>Décomposition de la trace de réservation (mesures Zipkin)</caption>
+<thead><tr><th>Début</th><th>Durée</th><th>Service</th><th>Opération</th></tr></thead><tbody>
+<tr><td>0,0 ms</td><td>206,8 ms</td><td>api-gateway</td><td>réception de POST /api/locations (total vu par le client)</td></tr>
+<tr><td>8,6 ms</td><td>189,6 ms</td><td>location-service</td><td>traitement de POST /locations</td></tr>
+<tr><td>14,8 ms</td><td>26,8 ms</td><td>location-service → client-service</td><td>GET /clients/1/eligibilite (dont 14,1 ms côté client-service)</td></tr>
+<tr><td>43,1 ms</td><td>16,8 ms</td><td>location-service → vehicule-service</td><td>GET /vehicules/4 (dont 6,8 ms côté vehicule-service)</td></tr>
+<tr><td>63,0 ms</td><td>113,4 ms</td><td>location-service → vehicule-service</td><td>POST /vehicules/4/reservations (dont 98,6 ms côté vehicule-service)</td></tr>
+</tbody></table>
+<ul>
+<li><b>Coût de la passerelle</b> : environ 19 ms entre l'entrée dans la gateway et la réponse de location-service
+(routage, résolution Eureka, filtre personnalisé), soit moins de 10 % du total.</li>
+<li><b>Appels séquentiels</b> : les trois appels inter-services s'enchaînent (éligibilité → véhicule → blocage) car
+chacun dépend du précédent ; leur somme (≈ 157 ms) représente l'essentiel du temps.</li>
+<li><b>Étape la plus lente</b> : le blocage de la période (98,6 ms côté vehicule-service). Il s'agit de la première
+réservation après le démarrage (classes chargées et code compilé à la volée par la JVM) ; sur les réservations
+suivantes, la trace complète tombe entre 37 et 117 ms.</li>
+<li><b>Latence réseau entre services</b> : l'écart entre la durée côté appelant et côté appelé est de 10 à 15 ms par
+appel (sérialisation JSON, établissement de connexion, load balancer).</li>
+<li><b>Pistes d'optimisation</b> : regrouper la lecture du véhicule et le blocage en un seul appel, paralléliser le
+contrôle d'éligibilité et la lecture du véhicule, et réutiliser les connexions HTTP (pool).</li>
+</ul>

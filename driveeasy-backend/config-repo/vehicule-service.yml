@@ -1,0 +1,17 @@
+server:
+  port: 8081
+
+spring:
+  # Aucune base de donnees : stockage en memoire (exigence du cahier des charges)
+  datasource:
+    url: "memory://vehicules"   # documente le choix de stockage ; aucun pilote JDBC n'est charge
+
+info:
+  app:
+    name: vehicule-service
+    description: Gestion du parc automobile, des categories et de la disponibilite
+
+driveeasy:
+  vehicule:
+    annee-min: 1990             # annee de mise en circulation minimale acceptee
+    donnees-demo: true          # charge un jeu de donnees de test au demarrage

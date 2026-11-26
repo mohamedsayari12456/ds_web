@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 230" role="img" aria-label="Vehicule suv">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+  <rect width="410" height="230" fill="url(#g)"/>
+  <ellipse cx="205" cy="192" rx="175" ry="10" fill="#cbd5e1" opacity=".6"/>
+  <path d="M52 146 L78 96 Q86 84 104 82 L262 82 Q280 83 292 98 L322 138 L356 144 Q372 148 372 164 L372 180 L40 180 L40 160 Q40 148 52 146 Z" fill="#b45309"/>
+  <path d="M98 136 L110 102 Q114 94 124 94 L184 94 L184 136 Z M194 94 L256 94 Q268 94 276 104 L300 136 L194 136 Z" fill="#ffffff" opacity=".75"/>
+  <circle cx="115" cy="180" r="24" fill="#0f172a"/><circle cx="115" cy="180" r="10" fill="#94a3b8"/>
+  <circle cx="300" cy="180" r="24" fill="#0f172a"/><circle cx="300" cy="180" r="10" fill="#94a3b8"/>
+</svg>

@@ -1,0 +1,10 @@
+# Seuls le nom et l'adresse du Config Server sont definis localement ;
+# tout le reste (port, Eureka, Zipkin, proprietes metier) vient de config-repo/location-service.yml
+spring:
+  application:
+    name: location-service
+  config:
+    import: configserver:${CONFIG_SERVER_URI:http://localhost:8888}
+  cloud:
+    config:
+      fail-fast: true

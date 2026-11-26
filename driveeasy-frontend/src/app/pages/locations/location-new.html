@@ -1,0 +1,144 @@
+<div class="entete">
+  <div>
+    <h1>Nouvelle location</h1>
+    <p>Assistant de réservation en 5 étapes</p>
+  </div>
+  <a class="btn" routerLink="/locations">← Locations</a>
+</div>
+
+<ol class="stepper">
+  @for (e of etapes; track e; let i = $index) {
+    <li [class.fait]="i < etape()" [class.courant]="i === etape()"><span>{{ i + 1 }}</span>{{ e }}</li>
+  }
+</ol>
+
+<div class="carte">
+  @switch (etape()) {
+    @case (0) {
+      <h2>1. Choisir le client</h2>
+      <form class="filtres" (ngSubmit)="chercherClients()">
+        <div class="champ" style="flex: 1">
+          <label for="rech">Rechercher un client</label>
+          <input id="rech" name="recherche" [(ngModel)]="recherche" placeholder="Nom, CIN ou email…" />
+        </div>
+        <button class="btn" type="submit">Rechercher</button>
+      </form>
+      <div class="liste-choix">
+        @for (c of clients(); track c.id) {
+          <button type="button" class="choix" [class.selectionne]="client()?.id === c.id" (click)="choisirClient(c)">
+            <strong>{{ c.prenom }} {{ c.nom }}</strong>
+            <span class="doux">CIN {{ c.cin }} · {{ c.age }} ans</span>
+            <span class="badge badge-{{ c.categorieClient }}">{{ c.categorieClient | libelle }}</span>
+            @if (c.permisExpire) { <span class="badge badge-ko">Permis expiré</span> }
+          </button>
+        }
+      </div>
+      @if (eligibilite(); as e) {
+        @if (e.eligible) {
+          <p class="alerte" style="background:#dcfce7;color:#166534">✓ {{ client()?.prenom }} {{ client()?.nom }} est éligible à la location.</p>
+        } @else {
+          <p class="alerte alerte-rouge">✗ Client non éligible : {{ e.motifs.join(' ; ') }}</p>
+        }
+      }
+    }
+
+    @case (1) {
+      <h2>2. Période de location</h2>
+      <div class="grille g3">
+        <div class="champ">
+          <label for="debut">Date de début</label>
+          <input id="debut" type="date" [min]="minDate" [(ngModel)]="dateDebut" (ngModelChange)="calculerJours()" />
+        </div>
+        <div class="champ">
+          <label for="fin">Date de fin prévue</label>
+          <input id="fin" type="date" [min]="dateDebut" [(ngModel)]="dateFin" (ngModelChange)="calculerJours()" />
+        </div>
+        <div class="kpi">
+          <span class="libelle">Durée facturée</span>
+          <span class="valeur">{{ nbJours() }} jour(s)</span>
+        </div>
+      </div>
+      @if (!periodeValide()) {
+        <p class="alerte alerte-rouge mt">La date de début doit être aujourd'hui ou plus tard, et la date de fin postérieure ou égale.</p>
+      }
+    }
+
+    @case (2) {
+      <h2>3. Véhicule disponible du {{ dateDebut | date: 'dd/MM/yyyy' }} au {{ dateFin | date: 'dd/MM/yyyy' }}</h2>
+      <div class="filtres">
+        <div class="champ">
+          <label for="cat">Catégorie</label>
+          <select id="cat" [(ngModel)]="categorie" (ngModelChange)="chercherVehicules()">
+            <option value="">Toutes</option>
+            @for (c of categories; track c) { <option [value]="c">{{ c | libelle }}</option> }
+          </select>
+        </div>
+      </div>
+      <div class="liste-vehicules">
+        @for (v of disponibles(); track v.id) {
+          <button type="button" class="choix vehicule-choix" [class.selectionne]="vehicule()?.id === v.id" (click)="vehicule.set(v)">
+            <img [src]="v.imageUrl" [alt]="v.marque" />
+            <strong>{{ v.marque }} {{ v.modele }}</strong>
+            <span class="doux">{{ v.categorie | libelle }} · {{ v.carburant | libelle }} · {{ v.boite | libelle }}</span>
+            <span class="prix-choix">{{ v.prixJournalier | number: '1.0-2' }} TND / jour</span>
+          </button>
+        } @empty {
+          <p class="vide">Aucun véhicule disponible sur cette période.</p>
+        }
+      </div>
+    }
+
+    @case (3) {
+      <h2>4. Simulation du prix</h2>
+      @if (simulation(); as s) {
+        <table class="tableau recap">
+          <tbody>
+            <tr><td>Client</td><td>{{ client()?.prenom }} {{ client()?.nom }} <span class="badge badge-{{ s.categorieClient }}">{{ s.categorieClient | libelle }}</span></td></tr>
+            <tr><td>Véhicule</td><td>{{ s.vehicule }} ({{ s.categorieVehicule | libelle }})</td></tr>
+            <tr><td>Période</td><td>{{ s.dateDebut | date: 'dd/MM/yyyy' }} → {{ s.dateFin | date: 'dd/MM/yyyy' }}</td></tr>
+            <tr><td>Nombre de jours × prix journalier</td><td class="num">{{ s.nbJours }} × {{ s.prixJournalier | tnd }}</td></tr>
+            <tr><td>Coefficient catégorie</td><td class="num">× {{ s.coefficientCategorie }}</td></tr>
+            <tr><td>Sous-total</td><td class="num">{{ s.sousTotal | tnd }}</td></tr>
+            <tr><td>Remise fidélité ({{ s.tauxRemise }} %)</td><td class="num">− {{ s.montantRemise | tnd }}</td></tr>
+            <tr class="total"><td>Montant total estimé</td><td class="num">{{ s.montantTotal | tnd }}</td></tr>
+          </tbody>
+        </table>
+        <p class="doux">Pénalité en cas de retard : 1,5 × prix journalier par jour de retard.</p>
+        @for (a of s.avertissements; track a) { <p class="alerte">{{ a }}</p> }
+      } @else {
+        <p class="vide">Calcul en cours…</p>
+      }
+    }
+
+    @case (4) {
+      @if (creee(); as l) {
+        <div class="succes">
+          <h2>✓ Réservation #{{ l.id }} confirmée</h2>
+          <p>Montant : <strong>{{ l.montantTotal | tnd }}</strong> · statut <span class="badge badge-{{ l.statut }}">{{ l.statut | libelle }}</span></p>
+          <div class="actions" style="justify-content: center">
+            <a class="btn btn-primaire" routerLink="/locations">Voir les locations</a>
+            <button class="btn" (click)="recommencer()">Nouvelle réservation</button>
+          </div>
+        </div>
+      } @else {
+        <h2>5. Confirmation</h2>
+        <p>Réserver <strong>{{ vehicule()?.marque }} {{ vehicule()?.modele }}</strong> pour
+          <strong>{{ client()?.prenom }} {{ client()?.nom }}</strong> du {{ dateDebut | date: 'dd/MM/yyyy' }}
+          au {{ dateFin | date: 'dd/MM/yyyy' }} pour <strong>{{ simulation()?.montantTotal | tnd }}</strong> ?</p>
+        <p class="doux">Le serveur revérifie l'éligibilité du client et la disponibilité du véhicule avant de créer la réservation.</p>
+        <button class="btn btn-primaire" (click)="confirmer()" [disabled]="envoi()">
+          {{ envoi() ? 'Réservation…' : 'Confirmer la réservation' }}
+        </button>
+      }
+    }
+  }
+
+  @if (!creee()) {
+    <div class="navigation">
+      <button class="btn" (click)="precedent()" [disabled]="etape() === 0">← Précédent</button>
+      @if (etape() < 4) {
+        <button class="btn btn-primaire" (click)="suivant()" [disabled]="!peutContinuer() || (etape() === 1 && !periodeValide())">Suivant →</button>
+      }
+    </div>
+  }
+</div>

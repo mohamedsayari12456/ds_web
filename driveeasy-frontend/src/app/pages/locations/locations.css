@@ -1,0 +1,22 @@
+.stepper { list-style: none; padding: 0; margin: 0 0 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+.stepper li { flex: 1; min-width: 120px; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: #fff; border: 1px solid var(--bord); color: var(--doux); font-size: 14px; }
+.stepper li span { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #e2e8f0; font-size: 12px; font-weight: 700; }
+.stepper li.courant { border-color: var(--accent); color: var(--texte); font-weight: 600; }
+.stepper li.courant span { background: var(--accent); color: #fff; }
+.stepper li.fait span { background: var(--vert); color: #fff; }
+.liste-choix { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-bottom: 14px; max-height: 380px; overflow: auto; }
+.liste-vehicules { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.choix { text-align: left; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; padding: 12px; border: 1.5px solid var(--bord); border-radius: 10px; background: #fff; cursor: pointer; font: inherit; color: inherit; }
+.choix:hover { border-color: #cbd5e1; }
+.choix.selectionne { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(228,87,46,.15); }
+.vehicule-choix img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; background: #f1f5f9; margin-bottom: 4px; }
+.prix-choix { color: var(--accent); font-weight: 700; }
+.navigation { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--bord); }
+.recap { max-width: 640px; }
+.recap td:first-child { color: var(--doux); }
+.recap .total td { font-weight: 700; font-size: 17px; border-top: 2px solid var(--texte); }
+.succes { text-align: center; padding: 30px 10px; }
+.succes h2 { color: var(--vert); font-size: 22px; }
+.facture { max-width: 760px; margin: 0 auto; }
+.facture-entete { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--texte); padding-bottom: 14px; margin-bottom: 16px; }
+.facture-entete h2 { margin: 0; }

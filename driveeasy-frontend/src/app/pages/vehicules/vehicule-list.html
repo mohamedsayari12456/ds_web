@@ -1,0 +1,93 @@
+<div class="entete">
+  <div>
+    <h1>Catalogue des véhicules</h1>
+    <p>{{ vehicules().length }} véhicule(s) correspondant aux filtres</p>
+  </div>
+  <a class="btn btn-primaire" routerLink="/vehicules/new">+ Ajouter un véhicule</a>
+</div>
+
+<form class="carte filtres" (ngSubmit)="charger()">
+  <div class="champ" style="flex: 1; min-width: 200px">
+    <label for="q">Recherche</label>
+    <input id="q" name="q" [(ngModel)]="filtres.q" placeholder="Marque, modèle, immatriculation…" />
+  </div>
+  <div class="champ">
+    <label for="cat">Catégorie</label>
+    <select id="cat" name="categorie" [(ngModel)]="filtres.categorie" (ngModelChange)="charger()">
+      <option value="">Toutes</option>
+      @for (c of categories; track c) { <option [value]="c">{{ c | libelle }}</option> }
+    </select>
+  </div>
+  <div class="champ">
+    <label for="carb">Carburant</label>
+    <select id="carb" name="carburant" [(ngModel)]="filtres.carburant" (ngModelChange)="charger()">
+      <option value="">Tous</option>
+      @for (c of carburants; track c) { <option [value]="c">{{ c | libelle }}</option> }
+    </select>
+  </div>
+  <div class="champ">
+    <label for="statut">Statut</label>
+    <select id="statut" name="statut" [(ngModel)]="filtres.statut" (ngModelChange)="charger()">
+      <option value="">Tous</option>
+      @for (s of statuts; track s) { <option [value]="s">{{ s | libelle }}</option> }
+    </select>
+  </div>
+  <div class="champ">
+    <label for="prix">Prix max / jour</label>
+    <input id="prix" name="prixMax" type="number" min="0" [(ngModel)]="filtres.prixMax" placeholder="TND" />
+  </div>
+  <div class="champ">
+    <label for="tri">Trier par</label>
+    <select id="tri" name="tri" [ngModel]="tri()" (ngModelChange)="changerTri($event)">
+      <option value="marque">Marque / modèle</option>
+      <option value="prix-asc">Prix croissant</option>
+      <option value="prix-desc">Prix décroissant</option>
+      <option value="annee-desc">Plus récents</option>
+      <option value="km-asc">Kilométrage</option>
+    </select>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primaire" type="submit">Filtrer</button>
+    <button class="btn" type="button" (click)="reinitialiser()">Réinitialiser</button>
+  </div>
+</form>
+
+<div class="catalogue">
+  @for (v of pageCourante(); track v.id) {
+    <article class="carte vehicule">
+      <div class="visuel">
+        <img [src]="v.imageUrl" [alt]="v.marque + ' ' + v.modele" (error)="imageParDefaut($event, v)" />
+        <span class="badge badge-{{ v.statut }} statut">{{ v.statut | libelle }}</span>
+      </div>
+      <div class="corps">
+        <div class="titre">
+          <h3>{{ v.marque }} {{ v.modele }}</h3>
+          <span class="prix">{{ v.prixJournalier | number: '1.0-2' }} <small>TND/j</small></span>
+        </div>
+        <p class="doux immat">{{ v.immatriculation }} · {{ v.annee }} · {{ v.categorie | libelle }}</p>
+        <ul class="specs">
+          <li>{{ v.carburant | libelle }}</li>
+          <li>{{ v.boite | libelle }}</li>
+          <li>{{ v.nbPlaces }} places</li>
+          <li>{{ v.kilometrage | number }} km</li>
+        </ul>
+        <div class="actions">
+          <a class="btn btn-petit" [routerLink]="['/vehicules', v.id, 'edit']">Modifier</a>
+          @if (v.statut !== 'LOUE') {
+            <button class="btn btn-petit" (click)="basculerMaintenance(v)">
+              {{ v.statut === 'MAINTENANCE' ? 'Remettre en service' : 'Maintenance' }}
+            </button>
+          }
+          <button class="btn btn-petit btn-danger" (click)="supprimer(v)" [disabled]="v.statut === 'LOUE'"
+                  [title]="v.statut === 'LOUE' ? 'Impossible : véhicule loué' : 'Supprimer'">Supprimer</button>
+        </div>
+      </div>
+    </article>
+  } @empty {
+    @if (charge()) { <p class="vide carte">Aucun véhicule ne correspond aux filtres.</p> }
+  }
+</div>
+
+@if (nbPages() > 1) {
+  <app-pagination [page]="page()" [nbPages]="nbPages()" [total]="tries().length" (changer)="page.set($event)" />
+}

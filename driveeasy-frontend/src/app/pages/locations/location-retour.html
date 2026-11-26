@@ -1,0 +1,93 @@
+@if (detail(); as d) {
+  <div class="entete no-print">
+    <div>
+      <h1>Retour du véhicule — location #{{ d.location.id }}</h1>
+      <p><span class="badge badge-{{ d.location.statut }}">{{ d.location.statut | libelle }}</span></p>
+    </div>
+    <div class="actions">
+      <a class="btn" routerLink="/locations">← Locations</a>
+      @if (d.location.statut === 'TERMINEE') { <button class="btn btn-primaire" (click)="imprimer()">🖨 Imprimer</button> }
+    </div>
+  </div>
+  @for (a of d.avertissements; track a) { <p class="alerte no-print">{{ a }}</p> }
+
+  @if (d.location.statut === 'EN_COURS') {
+    <div class="grille g2">
+      <div class="carte">
+        <h2>Saisie du retour</h2>
+        <div class="grille g2">
+          <div class="champ">
+            <label for="km">Kilométrage au retour *</label>
+            <input id="km" type="number" [min]="d.location.kmDepart ?? 0" [ngModel]="kmRetour()" (ngModelChange)="kmRetour.set($event)" />
+            <span class="doux">Départ : {{ d.location.kmDepart | number }} km</span>
+            @if (kmInvalide()) { <span class="erreur">Doit être ≥ au kilométrage de départ</span> }
+          </div>
+          <div class="champ">
+            <label for="date">Date de retour</label>
+            <input id="date" type="date" [min]="d.location.dateDebut" [ngModel]="dateRetour()" (ngModelChange)="dateRetour.set($event)" />
+            <span class="doux">Prévue le {{ d.location.dateFinPrevue | date: 'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+        <button class="btn btn-primaire mt" (click)="valider()" [disabled]="kmInvalide() || envoi()">
+          {{ envoi() ? 'Enregistrement…' : 'Valider le retour' }}
+        </button>
+      </div>
+      <div class="carte">
+        <h2>Calcul des pénalités (aperçu)</h2>
+        <table class="tableau recap">
+          <tbody>
+            <tr><td>Montant prévu</td><td class="num">{{ d.location.montantBase | tnd }}</td></tr>
+            <tr><td>Jours de retard</td><td class="num">{{ joursRetard() }}</td></tr>
+            <tr><td>Pénalité (1,5 × {{ d.location.prixJournalierApplique | tnd }} × {{ joursRetard() }})</td><td class="num">{{ penaliteEstimee() | tnd }}</td></tr>
+            <tr><td>Kilomètres parcourus</td><td class="num">{{ (kmRetour() ?? 0) - (d.location.kmDepart ?? 0) | number }} km</td></tr>
+            <tr class="total"><td>Total estimé</td><td class="num">{{ d.location.montantBase + penaliteEstimee() | tnd }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  } @else if (d.location.statut === 'TERMINEE') {
+    <div class="carte facture">
+      <div class="facture-entete">
+        <div>
+          <h2>DriveEasy</h2>
+          <span class="doux">Location de véhicules · Récapitulatif de location</span>
+        </div>
+        <div style="text-align: right">
+          <strong>Location n° {{ d.location.id }}</strong><br />
+          <span class="doux">Clôturée le {{ d.location.dateRetourEffectif | date: 'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+      <div class="grille g2">
+        <div>
+          <h3>Client</h3>
+          @if (d.client; as c) {
+            {{ c.prenom }} {{ c.nom }}<br />CIN {{ c.cin }}<br />Permis {{ c.numeroPermis }}<br />{{ c.email }}
+          }
+        </div>
+        <div>
+          <h3>Véhicule</h3>
+          @if (d.vehicule; as v) {
+            {{ v.marque }} {{ v.modele }} ({{ v.categorie | libelle }})<br />{{ v.immatriculation }}
+          }
+          <br />Kilométrage : {{ d.location.kmDepart | number }} → {{ d.location.kmRetour | number }} km
+          ({{ d.location.kmParcourus | number }} km)
+        </div>
+      </div>
+      <table class="tableau recap mt" style="max-width: none">
+        <tbody>
+          <tr><td>Période prévue</td><td class="num">{{ d.location.dateDebut | date: 'dd/MM/yyyy' }} → {{ d.location.dateFinPrevue | date: 'dd/MM/yyyy' }} ({{ d.location.nbJours }} j)</td></tr>
+          <tr><td>Retour effectif</td><td class="num">{{ d.location.dateRetourEffectif | date: 'dd/MM/yyyy' }}</td></tr>
+          <tr><td>{{ d.location.nbJours }} j × {{ d.location.prixJournalierApplique | tnd }} × coef. {{ d.location.coefficientCategorie }}</td><td class="num">{{ d.location.montantBase + d.location.montantRemise | tnd }}</td></tr>
+          <tr><td>Remise fidélité ({{ d.location.tauxRemise }} %)</td><td class="num">− {{ d.location.montantRemise | tnd }}</td></tr>
+          <tr><td>Pénalité de retard</td><td class="num">{{ d.location.penalite | tnd }}</td></tr>
+          <tr class="total"><td>Total à payer</td><td class="num">{{ d.location.montantTotal | tnd }}</td></tr>
+        </tbody>
+      </table>
+      <p class="doux mt">Merci de votre confiance — DriveEasy.</p>
+    </div>
+  } @else {
+    <p class="alerte">Cette location est {{ d.location.statut | libelle }} : aucun retour à enregistrer.</p>
+  }
+} @else {
+  <p class="vide">Chargement…</p>
+}

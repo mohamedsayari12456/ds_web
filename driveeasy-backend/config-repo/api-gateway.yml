@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+info:
+  app:
+    name: api-gateway
+    description: Point d'entree unique de la plateforme DriveEasy
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+          routes:
+            - id: vehicule-service
+              uri: lb://vehicule-service       # load balancing via Eureka
+              predicates:
+                - Path=/api/vehicules/**
+              filters:
+                - StripPrefix=1
+            - id: client-service
+              uri: lb://client-service
+              predicates:
+                - Path=/api/clients/**
+              filters:
+                - StripPrefix=1
+            - id: location-service
+              uri: lb://location-service
+              predicates:
+                - Path=/api/locations/**
+              filters:
+                - StripPrefix=1
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowed-origins:
+                  - http://localhost:4200
+                allowed-methods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
+                allowed-headers: "*"
+                exposed-headers: [X-Response-Time, X-Request-Id]
+                allow-credentials: true
+                max-age: 3600
+          default-filters:
+            # evite les en-tetes CORS dupliques si un service en ajoute aussi
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+
+driveeasy:
+  gateway:
+    # seuil (ms) au-dela duquel le filtre personnalise signale une requete lente
+    seuil-requete-lente-ms: 1000

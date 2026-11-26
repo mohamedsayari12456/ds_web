@@ -1,0 +1,4 @@
+# Profil "dev" commun : logs plus verbeux pour le code DriveEasy
+logging:
+  level:
+    tn.lim3.driveeasy: DEBUG

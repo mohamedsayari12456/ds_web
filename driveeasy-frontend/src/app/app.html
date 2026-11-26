@@ -1,0 +1,28 @@
+@if (loading.actif()) {
+  <div class="barre-chargement" role="progressbar" aria-label="Chargement"></div>
+}
+<div class="layout">
+  <aside class="sidebar no-print">
+    <a class="logo" routerLink="/dashboard">
+      <span class="logo-mark">DE</span>
+      <span><strong>DriveEasy</strong><small>Espace agence</small></span>
+    </a>
+    <nav>
+      @for (item of menu; track item.lien) {
+        <a [routerLink]="item.lien" routerLinkActive="actif">
+          <span class="icone" aria-hidden="true">{{ item.icone }}</span>{{ item.libelle }}
+        </a>
+      }
+    </nav>
+    <a class="btn btn-primaire cta" routerLink="/locations/new">+ Nouvelle location</a>
+    <p class="pied">Via API Gateway · :8080</p>
+  </aside>
+  <main class="contenu">
+    <router-outlet />
+  </main>
+</div>
+<div class="toasts" aria-live="polite">
+  @for (t of notifications.toasts(); track t.id) {
+    <div class="toast toast-{{ t.type }}" (click)="notifications.fermer(t.id)">{{ t.message }}</div>
+  }
+</div>

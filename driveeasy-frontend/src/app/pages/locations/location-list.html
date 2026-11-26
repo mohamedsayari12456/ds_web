@@ -1,0 +1,84 @@
+<div class="entete">
+  <div>
+    <h1>Locations</h1>
+    <p>{{ resultat()?.totalElements ?? 0 }} location(s)</p>
+  </div>
+  <a class="btn btn-primaire" routerLink="/locations/new">+ Nouvelle location</a>
+</div>
+
+<form class="carte filtres" (ngSubmit)="charger()">
+  <div class="champ">
+    <label for="statut">Statut</label>
+    <select id="statut" name="statut" [(ngModel)]="filtres.statut" (ngModelChange)="charger()">
+      <option value="">Tous</option>
+      @for (s of statuts; track s) { <option [value]="s">{{ s | libelle }}</option> }
+    </select>
+  </div>
+  <div class="champ">
+    <label for="du">Période du</label>
+    <input id="du" name="dateDebut" type="date" [(ngModel)]="filtres.dateDebut" />
+  </div>
+  <div class="champ">
+    <label for="au">au</label>
+    <input id="au" name="dateFin" type="date" [(ngModel)]="filtres.dateFin" />
+  </div>
+  <div class="actions">
+    <button class="btn btn-primaire" type="submit">Filtrer</button>
+    <button class="btn" type="button" (click)="reinitialiser()">Réinitialiser</button>
+  </div>
+</form>
+
+<div class="carte table-scroll">
+  <table class="tableau">
+    <thead>
+      <tr><th>#</th><th>Client</th><th>Véhicule</th><th>Période</th><th>Statut</th><th class="num">Montant</th><th class="num">Actions</th></tr>
+    </thead>
+    <tbody>
+      @for (l of resultat()?.content ?? []; track l.id) {
+        <tr>
+          <td>{{ l.id }}</td>
+          <td>
+            @if (clients().get(l.clientId); as c) {
+              <a [routerLink]="['/clients', c.id]">{{ c.prenom }} {{ c.nom }}</a>
+            } @else { #{{ l.clientId }} }
+          </td>
+          <td>{{ vehicule(l.vehiculeId) }}</td>
+          <td>
+            {{ l.dateDebut | date: 'dd/MM/yy' }} → {{ l.dateFinPrevue | date: 'dd/MM/yy' }}
+            <span class="doux">({{ l.nbJours }} j)</span>
+            @if (l.dateRetourEffectif) { <br /><span class="doux">Rendu le {{ l.dateRetourEffectif | date: 'dd/MM/yy' }}</span> }
+          </td>
+          <td>
+            <span class="badge badge-{{ l.statut }}">{{ l.statut | libelle }}</span>
+            @if (l.enRetard) { <span class="badge badge-ko">Retard</span> }
+          </td>
+          <td class="num">
+            {{ l.montantTotal | tnd }}
+            @if (l.penalite > 0) { <br /><span class="erreur">dont pénalité {{ l.penalite | tnd }}</span> }
+          </td>
+          <td class="num">
+            <div class="actions" style="justify-content: flex-end">
+              @switch (l.statut) {
+                @case ('RESERVEE') {
+                  <button class="btn btn-petit btn-primaire" (click)="depart(l)">Départ</button>
+                  <button class="btn btn-petit btn-danger" (click)="annuler(l)">Annuler</button>
+                }
+                @case ('EN_COURS') {
+                  <a class="btn btn-petit btn-primaire" [routerLink]="['/locations', l.id, 'retour']">Retour</a>
+                }
+                @case ('TERMINEE') {
+                  <a class="btn btn-petit" [routerLink]="['/locations', l.id, 'retour']">Récapitulatif</a>
+                }
+              }
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="vide">Aucune location</td></tr>
+      }
+    </tbody>
+  </table>
+  @if (resultat(); as r) {
+    <app-pagination [page]="r.page" [nbPages]="r.totalPages" [total]="r.totalElements" (changer)="charger($event)" />
+  }
+</div>

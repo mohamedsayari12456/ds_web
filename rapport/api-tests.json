@@ -1,0 +1,209 @@
+[
+  {
+    "nom": "Lister les vehicules diesel <= 200 TND",
+    "methode": "GET",
+    "url": "/api/vehicules?carburant=DIESEL&prixMax=200",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "[{\"id\":2,\"immatriculation\":\"145 TU 2210\",\"marque\":\"Renault\",\"modele\":\"Clio 5\",\"annee\":2023,\"couleur\":\"Gris\",\"categorie\":\"COMPACTE\",\"carburant\":\"DIESEL\",\"boite\":\"MANUELLE\",\"nbPlaces\":5,\"kilometrage\":21400,\"prixJournalier\":95.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/compacte.svg\",\"reservations\":[{\"locationId\":3,\"dateDebut\":\"2026-11-27\",\"dateFin\":\"2026-11-30\"}]},{\"id\":5,\"immatriculation\":\"141 TU 7744\",\"marque\":\"Hyundai\",\"modele\":\"Tucson\",\"annee\":2023,\"couleur\":\"Rouge\",\"categorie\":\"SUV\",\"carburant\":\"DIESEL\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":30100,\"prixJournalier\":160.00,\"statut\":\"LOUE\",\"imageUrl\":\"assets/vehicules/suv.svg\",\"reservations\":[{\"locationId\":1,\"dateDebut\":\"2026-11-22\",\"dateFin\":\"2026-11-27\"}]},{\"id\":10,\"immatriculation\":\"136 TU 4410\",\"marque\":\"Renault\",\"modele\":\"Kangoo\",\"annee\":2021,\"couleur\":\"Blanc\",\"categorie\":\"UTILITAIRE\",\"carburant\":\"DIESEL\",\"boite\":\"MANUELLE\",\"nbPlaces\":2,\"kilometrage\":76400,\"prixJournalier\":120.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/utilitaire.svg\",\"reservations\":[]},{\"id\":13,\"immatriculation\":\"199 TU 2219\",\"marque\":\"Skoda\",\"modele\":\"Octavia\",\"annee\":2024,\"couleur\":\"Gris\",\"categorie\":\"BERLINE\",\"carburant\":\"DIESEL\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":5000,\"prixJournalier\":140,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/berline.svg\",\"reservations\":[]}]"
+  },
+  {
+    "nom": "Vehicules disponibles sur une periode",
+    "methode": "GET",
+    "url": "/api/vehicules/disponibles?dateDebut=2026-12-15&dateFin=2026-12-18",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "[{\"id\":1,\"immatriculation\":\"123 TU 4567\",\"marque\":\"Peugeot\",\"modele\":\"208\",\"annee\":2022,\"couleur\":\"Blanc\",\"categorie\":\"ECONOMIQUE\",\"carburant\":\"ESSENCE\",\"boite\":\"MANUELLE\",\"nbPlaces\":5,\"kilometrage\":38500,\"prixJournalier\":85.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/economique.svg\",\"reservations\":[]},{\"id\":2,\"immatriculation\":\"145 TU 2210\",\"marque\":\"Renault\",\"modele\":\"Clio 5\",\"annee\":2023,\"couleur\":\"Gris\",\"categorie\":\"COMPACTE\",\"carburant\":\"DIESEL\",\"boite\":\"MANUELLE\",\"nbPlaces\":5,\"kilometrage\":21400,\"prixJournalier\":95.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/compacte.svg\",\"reservations\":[{\"locationId\":3,\"dateDebut\":\"2026-11-27\",\"dateFin\":\"2026-11-30\"}]},{\"id\":3,\"immatriculation\":\"138 TU 9001\",\"marque\":\"Volkswagen\",\"modele\":\"Golf 8\",\"annee\":2021,\"couleur\":\"Bleu\",\"categorie\":\"COMPACTE\",\"carburant\":\"ESSENCE\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":52300,\"prixJournalier\":110.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/compacte.svg\",\"reservations\":[]},{\"id\":4,\"immatriculation\":\"150 TU 1188\",\"marque\":\"Toyota\",\"modele\":\"Corolla Hybrid\",\"annee\":2024,\"couleur\":\"Noir\",\"categorie\":\"BERLINE\",\"carburant\":\"HYBRIDE\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":9800,\"prixJournalier\":130.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/berline.svg\",\"reservations\":[]},{\"id\":6,\"immatriculation\":\"147 TU 3321\",\"marque\":\"Kia\",\"modele\":\"Sportage\",\"annee\":2022,\"couleur\":\"Blanc\",\"categorie\":\"SUV\",\"carburant\":\"ESSENCE\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":41250,\"prixJournalier\":155.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/suv.svg\",\"reservations\":[]},{\"id\":8,\"immatriculation\":\"149 TU 8080\",\"marque\":\"BMW\",\"modele\":\"Serie 5\",\"annee\":2023,\"couleur\":\"Gris\",\"categorie\":\"LUXE\",\"carburant\":\"ESSENCE\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":19900,\"prixJournalier\":290.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/luxe.svg\",\"reservations\":[]},{\"id\":9,\"immatriculation\":\"130 TU 6542\",\"marque\":\"Dacia\",\"modele\":\"Logan\",\"annee\":2020,\"couleur\":\"Beige\",\"categorie\":\"ECONOMIQUE\",\"carburant\":\"GPL\",\"boite\":\"MANUELLE\",\"nbPlaces\":5,\"kilometrage\":98700,\"prixJournalier\":65.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/economique.svg\",\"reservations\":[]},{\"id\":10,\"immatriculation\":\"136 TU 4410\",\"marque\":\"Renault\",\"modele\":\"Kangoo\",\"annee\":2021,\"couleur\":\"Blanc\",\"categorie\":\"UTILITAIRE\",\"carburant\":\"DIESEL\",\"boite\":\"MANUELLE\",\"nbPlaces\":2,\"kilometrage\":76400,\"prixJournalier\":120.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/utilitaire.svg\",\"reservations\":[]},{\"id\":11,\"immatriculation\":\"153 TU 2024\",\"marque\":\"Tesla\",\"modele\":\"Model 3\",\"annee\":2024,\"couleur\":\"Bleu\",\"categorie\":\"BERLINE\",\"carburant\":\"ELECTRIQUE\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":8300,\"prixJournalier\":220.00,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/berline.svg\",\"reservations\":[{\"locationId\":4,\"dateDebut\":\"2026-12-02\",\"dateFin\":\"2026-12-05\"}]},{\"id\":13,\"immatriculation\":\"199 TU 2219\",\"marque\":\"Skoda\",\"modele\":\"Octavia\",\"annee\":2024,\"couleur\":\"Gris\",\"categorie\":\"BERLINE\",\"carburant\":\"DIESEL\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":5000,\"prixJournalier\":140,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/berline.svg\",\"reservations\":[]}]"
+  },
+  {
+    "nom": "Creer un vehicule",
+    "methode": "POST",
+    "url": "/api/vehicules",
+    "corps": "{\"immatriculation\": \"199 TU 5671\", \"marque\": \"Skoda\", \"modele\": \"Octavia\", \"annee\": 2024, \"couleur\": \"Gris\", \"categorie\": \"BERLINE\", \"carburant\": \"DIESEL\", \"boite\": \"AUTOMATIQUE\", \"nbPlaces\": 5, \"kilometrage\": 5000, \"prixJournalier\": 140}",
+    "statut": 201,
+    "attendu": 201,
+    "reponse": "{\"id\":14,\"immatriculation\":\"199 TU 5671\",\"marque\":\"Skoda\",\"modele\":\"Octavia\",\"annee\":2024,\"couleur\":\"Gris\",\"categorie\":\"BERLINE\",\"carburant\":\"DIESEL\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":5000,\"prixJournalier\":140,\"statut\":\"DISPONIBLE\",\"imageUrl\":\"assets/vehicules/berline.svg\",\"reservations\":[]}"
+  },
+  {
+    "nom": "Creer un vehicule : immatriculation existante",
+    "methode": "POST",
+    "url": "/api/vehicules",
+    "corps": "{\"immatriculation\": \"123 TU 4567\", \"marque\": \"Skoda\", \"modele\": \"Octavia\", \"annee\": 2024, \"couleur\": \"Gris\", \"categorie\": \"BERLINE\", \"carburant\": \"DIESEL\", \"boite\": \"AUTOMATIQUE\", \"nbPlaces\": 5, \"kilometrage\": 5000, \"prixJournalier\": 140}",
+    "statut": 409,
+    "attendu": 409,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:47.644841828\",\"status\":409,\"error\":\"Conflict\",\"message\":\"L'immatriculation 123 TU 4567 existe deja\",\"path\":\"/vehicules\"}"
+  },
+  {
+    "nom": "Creer un vehicule : prix negatif",
+    "methode": "POST",
+    "url": "/api/vehicules",
+    "corps": "{\"immatriculation\": \"1 TU 1\", \"marque\": \"Skoda\", \"modele\": \"Octavia\", \"annee\": 2024, \"couleur\": \"Gris\", \"categorie\": \"BERLINE\", \"carburant\": \"DIESEL\", \"boite\": \"AUTOMATIQUE\", \"nbPlaces\": 5, \"kilometrage\": 5000, \"prixJournalier\": -5}",
+    "statut": 400,
+    "attendu": 400,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:47.673088824\",\"status\":400,\"error\":\"Bad Request\",\"message\":\"Donnees invalides\",\"path\":\"/vehicules\",\"details\":{\"prixJournalier\":\"Le prix journalier doit etre strictement positif\"}}"
+  },
+  {
+    "nom": "Supprimer un vehicule loue",
+    "methode": "DELETE",
+    "url": "/api/vehicules/5",
+    "corps": null,
+    "statut": 409,
+    "attendu": 409,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:47.690436279\",\"status\":409,\"error\":\"Conflict\",\"message\":\"Suppression refusee : le vehicule 141 TU 7744 est actuellement loue\",\"path\":\"/vehicules/5\"}"
+  },
+  {
+    "nom": "Vehicule inexistant",
+    "methode": "GET",
+    "url": "/api/vehicules/999",
+    "corps": null,
+    "statut": 404,
+    "attendu": 404,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:47.710982127\",\"status\":404,\"error\":\"Not Found\",\"message\":\"Vehicule introuvable (id=999)\",\"path\":\"/vehicules/999\"}"
+  },
+  {
+    "nom": "Eligibilite : client eligible",
+    "methode": "GET",
+    "url": "/api/clients/1/eligibilite",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"clientId\":1,\"eligible\":true,\"age\":35,\"ageSuffisant\":true,\"permisValide\":true,\"categorieClient\":\"STANDARD\",\"motifs\":[]}"
+  },
+  {
+    "nom": "Eligibilite : client de 19 ans",
+    "methode": "GET",
+    "url": "/api/clients/7/eligibilite",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"clientId\":7,\"eligible\":false,\"age\":19,\"ageSuffisant\":false,\"permisValide\":true,\"categorieClient\":\"STANDARD\",\"motifs\":[\"Age insuffisant : 19 ans (minimum 21 ans)\"]}"
+  },
+  {
+    "nom": "Eligibilite : permis expire",
+    "methode": "GET",
+    "url": "/api/clients/8/eligibilite",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"clientId\":8,\"eligible\":false,\"age\":37,\"ageSuffisant\":true,\"permisValide\":false,\"categorieClient\":\"STANDARD\",\"motifs\":[\"Permis de conduire expire depuis le 2026-09-25\"]}"
+  },
+  {
+    "nom": "Supprimer un client ayant une location active",
+    "methode": "DELETE",
+    "url": "/api/clients/2",
+    "corps": null,
+    "statut": 409,
+    "attendu": 409,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:47.834525653\",\"status\":409,\"error\":\"Conflict\",\"message\":\"Suppression refusee : le client a 1 location(s) active(s)\",\"path\":\"/clients/2\"}"
+  },
+  {
+    "nom": "Simulation (client VIP, SUV, 4 jours)",
+    "methode": "POST",
+    "url": "/api/locations/simulation",
+    "corps": "{\"clientId\": 5, \"vehiculeId\": 6, \"dateDebut\": \"2026-12-15\", \"dateFin\": \"2026-12-19\"}",
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"clientId\":5,\"vehiculeId\":6,\"vehicule\":\"Kia Sportage\",\"categorieVehicule\":\"SUV\",\"categorieClient\":\"VIP\",\"dateDebut\":\"2026-12-15\",\"dateFin\":\"2026-12-19\",\"nbJours\":4,\"prixJournalier\":155.00,\"coefficientCategorie\":1.2,\"sousTotal\":744.00,\"tauxRemise\":10,\"montantRemise\":74.40,\"montantTotal\":669.60,\"clientEligible\":true,\"vehiculeDisponible\":true,\"avertissements\":[]}"
+  },
+  {
+    "nom": "Creer une reservation",
+    "methode": "POST",
+    "url": "/api/locations",
+    "corps": "{\"clientId\": 5, \"vehiculeId\": 6, \"dateDebut\": \"2026-12-15\", \"dateFin\": \"2026-12-19\"}",
+    "statut": 201,
+    "attendu": 201,
+    "reponse": "{\"id\":42,\"clientId\":5,\"vehiculeId\":6,\"dateDebut\":\"2026-12-15\",\"dateFinPrevue\":\"2026-12-19\",\"nbJours\":4,\"prixJournalierApplique\":155.00,\"coefficientCategorie\":1.2,\"tauxRemise\":10,\"montantRemise\":74.40,\"montantBase\":669.60,\"penalite\":0,\"montantTotal\":669.60,\"statut\":\"RESERVEE\",\"enRetard\":false,\"dateCreation\":\"2026-11-25T17:21:48.251621105\"}"
+  },
+  {
+    "nom": "Reserver le meme vehicule sur la meme periode",
+    "methode": "POST",
+    "url": "/api/locations",
+    "corps": "{\"clientId\": 1, \"vehiculeId\": 6, \"dateDebut\": \"2026-12-16\", \"dateFin\": \"2026-12-17\"}",
+    "statut": 409,
+    "attendu": 409,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:48.427572415\",\"status\":409,\"error\":\"Conflict\",\"message\":\"Le vehicule 147 TU 3321 est deja reserve sur cette periode\",\"path\":\"/locations\"}"
+  },
+  {
+    "nom": "Reserver : client non eligible",
+    "methode": "POST",
+    "url": "/api/locations",
+    "corps": "{\"clientId\": 7, \"vehiculeId\": 1, \"dateDebut\": \"2026-12-15\", \"dateFin\": \"2026-12-17\"}",
+    "statut": 400,
+    "attendu": 400,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:48.473762709\",\"status\":400,\"error\":\"Bad Request\",\"message\":\"Client non eligible a la location : Age insuffisant : 19 ans (minimum 21 ans)\",\"path\":\"/locations\"}"
+  },
+  {
+    "nom": "Reserver : vehicule en maintenance",
+    "methode": "POST",
+    "url": "/api/locations",
+    "corps": "{\"clientId\": 1, \"vehiculeId\": 12, \"dateDebut\": \"2026-12-15\", \"dateFin\": \"2026-12-17\"}",
+    "statut": 409,
+    "attendu": 409,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:48.542977367\",\"status\":409,\"error\":\"Conflict\",\"message\":\"Le vehicule 128 TU 3377 est MAINTENANCE et ne peut pas etre reserve\",\"path\":\"/locations\"}"
+  },
+  {
+    "nom": "Depart de la reservation creee",
+    "methode": "PATCH",
+    "url": "/api/locations/42/depart",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"id\":42,\"clientId\":5,\"vehiculeId\":6,\"dateDebut\":\"2026-12-15\",\"dateFinPrevue\":\"2026-12-19\",\"nbJours\":4,\"kmDepart\":41250,\"prixJournalierApplique\":155.00,\"coefficientCategorie\":1.2,\"tauxRemise\":10,\"montantRemise\":74.40,\"montantBase\":669.60,\"penalite\":0,\"montantTotal\":669.60,\"statut\":\"EN_COURS\",\"enRetard\":false,\"dateCreation\":\"2026-11-25T17:21:48.251621105\"}"
+  },
+  {
+    "nom": "Annuler une location en cours",
+    "methode": "PATCH",
+    "url": "/api/locations/42/annulation",
+    "corps": null,
+    "statut": 409,
+    "attendu": 409,
+    "reponse": "{\"timestamp\":\"2026-11-25T17:21:48.64755125\",\"status\":409,\"error\":\"Conflict\",\"message\":\"Annulation impossible : seule une reservation peut etre annulee (statut actuel EN_COURS)\",\"path\":\"/locations/42/annulation\"}"
+  },
+  {
+    "nom": "Retour de la location 2 (en retard -> penalite)",
+    "methode": "PATCH",
+    "url": "/api/locations/2/retour",
+    "corps": "{\"kmRetour\": 13600}",
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"id\":2,\"clientId\":3,\"vehiculeId\":7,\"dateDebut\":\"2026-11-19\",\"dateFinPrevue\":\"2026-11-24\",\"dateRetourEffectif\":\"2026-11-25\",\"nbJours\":5,\"kmDepart\":12750,\"kmRetour\":13600,\"kmParcourus\":850,\"prixJournalierApplique\":260.00,\"coefficientCategorie\":1.35,\"tauxRemise\":0,\"montantRemise\":0.00,\"montantBase\":1755.00,\"penalite\":390.00,\"montantTotal\":2145.00,\"statut\":\"TERMINEE\",\"enRetard\":false,\"dateCreation\":\"2026-11-17T10:00:00\"}"
+  },
+  {
+    "nom": "Annuler la reservation 4",
+    "methode": "PATCH",
+    "url": "/api/locations/4/annulation",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"id\":4,\"clientId\":1,\"vehiculeId\":11,\"dateDebut\":\"2026-12-02\",\"dateFinPrevue\":\"2026-12-05\",\"nbJours\":3,\"prixJournalierApplique\":220.00,\"coefficientCategorie\":1.1,\"tauxRemise\":0,\"montantRemise\":0.00,\"montantBase\":726.00,\"penalite\":0,\"montantTotal\":726.00,\"statut\":\"ANNULEE\",\"enRetard\":false,\"dateCreation\":\"2026-11-30T10:00:00\"}"
+  },
+  {
+    "nom": "Detail enrichi d'une location",
+    "methode": "GET",
+    "url": "/api/locations/1",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"location\":{\"id\":1,\"clientId\":2,\"vehiculeId\":5,\"dateDebut\":\"2026-11-22\",\"dateFinPrevue\":\"2026-11-27\",\"nbJours\":5,\"kmDepart\":30100,\"prixJournalierApplique\":160.00,\"coefficientCategorie\":1.2,\"tauxRemise\":5,\"montantRemise\":48.00,\"montantBase\":912.00,\"penalite\":0,\"montantTotal\":912.00,\"statut\":\"EN_COURS\",\"enRetard\":false,\"dateCreation\":\"2026-11-20T10:00:00\"},\"client\":{\"id\":2,\"cin\":\"08765432\",\"nom\":\"TRABELSI\",\"prenom\":\"Amira\",\"age\":29,\"email\":\"amira.trabelsi@mail.tn\",\"telephone\":\"+216 22 334 455\",\"numeroPermis\":\"TN-2015-44556\",\"dateExpirationPermis\":\"2032-11-25\",\"permisExpire\":false,\"categorieClient\":\"FIDELE\"},\"vehicule\":{\"id\":5,\"immatriculation\":\"141 TU 7744\",\"marque\":\"Hyundai\",\"modele\":\"Tucson\",\"annee\":2023,\"couleur\":\"Rouge\",\"categorie\":\"SUV\",\"carburant\":\"DIESEL\",\"boite\":\"AUTOMATIQUE\",\"nbPlaces\":5,\"kilometrage\":30100,\"prixJournalier\":160.00,\"statut\":\"LOUE\",\"imageUrl\":\"assets/vehicules/suv.svg\"},\"avertissements\":[]}"
+  },
+  {
+    "nom": "Liste paginee des locations terminees",
+    "methode": "GET",
+    "url": "/api/locations?statut=TERMINEE&page=0&size=3",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"content\":[{\"id\":41,\"clientId\":1,\"vehiculeId\":6,\"dateDebut\":\"2026-11-19\",\"dateFinPrevue\":\"2026-11-21\",\"dateRetourEffectif\":\"2026-11-21\",\"nbJours\":2,\"kmDepart\":10822,\"kmRetour\":11182,\"kmParcourus\":360,\"prixJournalierApplique\":155.00,\"coefficientCategorie\":1.2,\"tauxRemise\":0,\"montantRemise\":0.00,\"montantBase\":372.00,\"penalite\":0.00,\"montantTotal\":372.00,\"statut\":\"TERMINEE\",\"enRetard\":false,\"dateCreation\":\"2026-11-17T10:00:00\"},{\"id\":40,\"clientId\":10,\"vehiculeId\":2,\"dateDebut\":\"2026-11-11\",\"dateFinPrevue\":\"2026-11-14\",\"dateRetourEffectif\":\"2026-11-14\",\"nbJours\":3,\"kmDepart\":11918,\"kmRetour\":12458,\"kmParcourus\":540,\"prixJournalierApplique\":95.00,\"coefficientCategorie\":1.05,\"tauxRemise\":0,\"montantRemise\":0.00,\"montantBase\":299.25,\"penalite\":0.00,\"montantTotal\":299.25,\"statut\":\"TERMINEE\",\"enRetard\":false,\"dateCreation\":\"2026-11-09T10:00:00\"},{\"id\":39,\"clientId\":8,\"vehiculeId\":3,\"dateDebut\":\"2026-05-29\",\"dateFinPrevue\":\"2026-06-01\",\"dateRetourEffectif\":\"2026-06-01\",\"nbJours\":3,\"kmDepart\":34660,\"kmRetour\":35200,\"kmParcourus\":540,\"prixJournalierApplique\":110.00,\"coefficientCategorie\":1.05,\"tauxRemise\":0,\"montantRemise\":0.00,\"montantBase\":346.50,\"penalite\":0.00,\"montantTotal\":346.50,\"statut\":\"TERMINEE\",\"enRetard\":false,\"dateCreation\":\"2026-05-27T10:00:00\"}],\"page\":0,\"size\":3,\"totalElements\":37,\"totalPages\":13}"
+  },
+  {
+    "nom": "Statistiques",
+    "methode": "GET",
+    "url": "/api/locations/statistiques",
+    "corps": null,
+    "statut": 200,
+    "attendu": 200,
+    "reponse": "{\"chiffreAffairesTotal\":25598.44,\"chiffreAffairesMois\":5754.15,\"chiffreAffairesParMois\":[{\"mois\":\"2026-06\",\"montant\":3682.57,\"nbLocations\":6},{\"mois\":\"2026-07\",\"montant\":3313.32,\"nbLocations\":6},{\"mois\":\"2026-08\",\"montant\":4944.20,\"nbLocations\":6},{\"mois\":\"2026-09\",\"montant\":4059.70,\"nbLocations\":6},{\"mois\":\"2026-10\",\"montant\":3844.50,\"nbLocations\":5},{\"mois\":\"2026-11\",\"montant\":5754.15,\"nbLocations\":8}],\"locationsParStatut\":{\"RESERVEE\":1,\"EN_COURS\":2,\"TERMINEE\":37,\"ANNULEE\":2},\"locationsEnCours\":2,\"locationsEnRetard\":0,\"nbVehicules\":14,\"vehiculesParStatut\":{\"DISPONIBLE\":11,\"LOUE\":2,\"MAINTENANCE\":1},\"tauxOccupation\":14.3,\"tauxOccupation30Jours\":6.9,\"topVehicules\":[{\"vehiculeId\":6,\"libelle\":\"Kia Sportage\",\"immatriculation\":\"147 TU 3321\",\"nbLocations\":5,\"chiffreAffaires\":1767.00},{\"vehiculeId\":7,\"libelle\":\"Mercedes-Benz Classe C\",\"immatriculation\":\"152 TU 0505\",\"nbLocations\":5,\"chiffreAffaires\":6743.10},{\"vehiculeId\":8,\"libelle\":\"BMW Serie 5\",\"immatriculation\":\"149 TU 8080\",\"nbLocations\":5,\"chiffreAffaires\":5172.14},{\"vehiculeId\":1,\"libelle\":\"Peugeot 208\",\"immatriculation\":\"123 TU 4567\",\"nbLocations\":4,\"chiffreAffaires\":1551.25},{\"vehiculeId\":2,\"libelle\":\"Renault Clio 5\",\"immatriculation\":\"145 TU 2210\",\"nbLocations\":4,\"chiffreAffaires\":997.50}],\"avertissements\":[]}"
+  }
+]

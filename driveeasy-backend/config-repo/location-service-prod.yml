@@ -1,0 +1,8 @@
+# Profil "prod" (exemple) : echantillonnage partiel des traces et moins de logs
+management:
+  tracing:
+    sampling:
+      probability: 0.2
+driveeasy:
+  location:
+    donnees-demo: false
